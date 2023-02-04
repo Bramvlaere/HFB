@@ -1,0 +1,251 @@
+location
+STRING
+santa monica, ca
+REQUIRED
+Location details, address, county, neighborhood or Zip code.
+
+Optional Parameters
+page
+NUMBER
+OPTIONAL
+Page number if at the previous response totalPages > 1.
+Max value is 20.
+
+To be able to access more data, you can break down your request by dividing it into price groups using the minPrice and maxPrice parameters. For example 0 - 100,000, 100,001 - 500,000, 500,001 - 800,000 and so on. This trick will help you to get more data.
+
+status_type
+ENUM
+OPTIONAL
+home_type
+STRING
+Condos
+OPTIONAL
+Property type comma-separated or empty for all types:
+For Rent
+
+Townhomes
+Houses
+Apartments_Condos_Co-ops
+For others:
+
+Multi-family
+Apartments
+Houses
+Manufactured
+Condos
+LotsLand
+Townhomes
+sort
+STRING
+Newest
+OPTIONAL
+For status_type = ForSale OR RecentlySold are available:
+
+Homes_for_You
+Price_High_Low
+Price_Low_High
+Newest
+Bedrooms
+Bathrooms
+Square_Feet
+Lot_Size
+default Homes_for_You
+
+For status_type = ForRent are available:
+
+Verified_Source
+Payment_High_Low
+Payment_Low_High
+Newest
+Bedrooms
+Bathrooms
+Square_Feet
+Lot_Size
+default Verified_Source
+
+minPrice
+NUMBER
+OPTIONAL
+If status_type = ForSale OR RecentlySold you can filter by min price.
+
+maxPrice
+NUMBER
+500000
+OPTIONAL
+If status_type = ForSale OR RecentlySold you can filter by max price.
+
+rentMinPrice
+NUMBER
+OPTIONAL
+If status_type = ForRent you can filter by min rent price.
+
+rentMaxPrice
+NUMBER
+OPTIONAL
+If status_type = ForRent you can filter by max rent price.
+
+bathsMin
+NUMBER
+1
+OPTIONAL
+Bathrooms min count
+
+bathsMax
+NUMBER
+OPTIONAL
+Bathrooms max count
+
+bedsMin
+NUMBER
+1
+OPTIONAL
+Bedrooms min count
+
+bedsMax
+NUMBER
+OPTIONAL
+Bedrooms max count
+
+sqftMin
+NUMBER
+OPTIONAL
+Square Feet min value
+
+sqftMax
+NUMBER
+OPTIONAL
+Square Feet max value.
+
+buildYearMin
+NUMBER
+OPTIONAL
+Year Built min value.
+
+buildYearMax
+NUMBER
+OPTIONAL
+Year Built max value.
+
+daysOn
+ENUM
+OPTIONAL
+Days on Z. Use with status_type='ForSale' or status_type='ForRent'
+
+soldInLast
+ENUM
+OPTIONAL
+'Sold In Last' on Z. Use with status_type='RecentlySold'.
+
+isBasementFinished
+NUMBER
+OPTIONAL
+Basement filter. Set it to 1 if needed.
+
+isBasementUnfinished
+NUMBER
+OPTIONAL
+Basement filter. Set it to 1 if needed.
+
+isPendingUnderContract
+NUMBER
+OPTIONAL
+Pending & Under Contract filter. Set it to 1 if needed.
+
+isAcceptingBackupOffers
+NUMBER
+OPTIONAL
+Accepting Backup Offers filter. Set it to 1 if needed.
+
+isComingSoon
+NUMBER
+OPTIONAL
+Coming Soon listings are homes that will soon be on the market.. Set it to 1 if needed.
+
+otherListings
+NUMBER
+OPTIONAL
+If set to 1, the results will only include data from the Other Listings tab.
+
+isNewConstruction
+NUMBER
+OPTIONAL
+New Construction filter. Set it to 1 if you only need properties with New Construction status.
+
+keywords
+STRING
+OPTIONAL
+Filter with keywords.
+
+lotSizeMin
+STRING
+OPTIONAL
+Available values:
+
+1,000 sqft
+2,000 sqft
+3,000 sqft
+4,000 sqft
+5,000 sqft
+7,500 sqft
+1/4 acre/10,890 sqft
+1/2 acre/21,780 sqft
+1 acre/43,560 sqft
+lotSizeMax
+STRING
+OPTIONAL
+Available values:
+
+1,000 sqft
+2,000 sqft
+3,000 sqft
+4,000 sqft
+5,000 sqft
+7,500 sqft
+1/4 acre/10,890 sqft
+1/2 acre/21,780 sqft
+1 acre/43,560 sqft
+2 acres/87,120 sqft
+5 acres/217,800 sqft
+10 acres/435,600 sqft
+20 acres/871,200 sqft
+50 acres/2,178,000 sqft
+100 acres/4,356,000 sqftf
+
+
+
+
+Option 1:
+City: new jersey cities
+Type: home, single family, Townhome
+Price: max 500,000
+HOA: none
+Location: within .5 miles of nyc/nj transit train or ferry
+
+Option 2: 
+City: New Jersey cities
+Type: home, single family, Townhome
+Price: max 500,000
+HOA: none
+Parking: garage
+OR 
+Parking: driveway 
+Location: within 2 miles of nyc/nj transit train or ferry
+
+Option 3:
+City: NJ Cities next to Hudson river (fort lee being too far north)
+Type:  condo, co-op, multifamily
+Price: max 350,000
+HOA: max 500
+Location: within .3 miles of nyc/nj transit train or ferry
+
+Option 4:
+City: manhattan (harlem too far up north)
+Type:  condo 
+OR
+Type: co-op with no board approval
+Price: max 385,000
+HOA: 800
+Location: within .5 miles of nyc/nj transit train or ferry
+
+
+google api AIzaSyBiUvYmy7cqFMvA_Dj42C3mWRWri-7-YhE
