@@ -1,7 +1,12 @@
 import requests
 import json
 import datetime
+import sched 
+import telegram 
 from telegram.ext import *
+import asyncio
+from telegram import Update
+from telegram.ext import Updater, MessageHandler
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -19,6 +24,7 @@ print('Bot started...')
 
 # Telegram API token and chat ID
 TOKEN = '6161655715:AAGEYTNiOq7GZmj6xIIC35lDDAmw05GcWxo'
+bot = telegram.Bot(token=TOKEN)
 no_hao=['OP1','OP2']
 parking_needed=['OP2']
 
@@ -60,7 +66,7 @@ def main():
                 if type in parking_needed:
                     if features['parking']=="No parking or not available" or features['parking']=="No parking or not available":
                         continue
-                message=f"Address: {adress}\n{features['imgSrc']}\nProperty Type: {features['propertyType']}\nEstimate Value: {features['zestimate']}\nDays Listed: {features['daysOnZillow']}\nListing Price: {features['price']}\nBedrooms: {features['bedrooms']}\nRent Estimate: {features['rentZestimate']}\nBathrooms: {features['bathrooms']}\nHAO: {features['HOA']}\nParking: {features['parking']}\nLiving Area: {features['livingArea']} sqft\n {location}\n {link}"
+                message=f"Address: {adress}\nType: {type}\n{features['imgSrc']}\nProperty Type: {features['propertyType']}\nEstimate Value: {features['zestimate']}\nDays Listed: {features['daysOnZillow']}\nListing Price: {features['price']}\nBedrooms: {features['bedrooms']}\nRent Estimate: {features['rentZestimate']}\nBathrooms: {features['bathrooms']}\nHAO: {features['HOA']}\nParking: {features['parking']}\nLiving Area: {features['livingArea']} sqft\n {location}\n {link}"
                 msg_to_send.append(message)
                 output.update({adress:features})
 
@@ -77,6 +83,15 @@ def main():
 
     return msg_to_send,c
 
+
+# def run_every_24_hours(scheduler, interval, action, actionargs=()):
+#     # Your code here
+#     main()
+#     scheduler.enter(interval, 1, run_every_24_hours, (scheduler, interval, action, actionargs))
+
+# s = sched.scheduler(time.time, time.sleep)
+# s.enter(86400, 1, run_every_24_hours, (s, 86400, run_every_24_hours))
+# s.run()
 
 def HAO_check(id):
     time.sleep(1)
