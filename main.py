@@ -98,7 +98,7 @@ def main():
                     if features['parking']=="No parking or not available" or features['parking']=="No parking or not available":
                         continue
                     
-                message=f"Address: {adress}\nType: {type}\n{features['imgSrc']}\nProperty Type: {features['propertyType']}\nEstimate Value: {features['zestimate']}\nDays Listed: {features['daysOnZillow']}\nListing Price: {features['price']}\nBedrooms: {features['bedrooms']}\nRent Estimate: {features['rentZestimate']}\nBathrooms: {features['bathrooms']}\nHAO: {features['HOA']}\nParking: {features['parking']}\nLiving Area: {features['livingArea']} sqft\n {location}\n {link}"
+                message=f"Address: {adress}\nType: {type}\n{features['imgSrc']}\nProperty Type: {features['propertyType']}\nEstimate Value: {features['zestimate']}\nDays Listed: {features['daysOnZillow']}\nListing Price: {features['price']}\nBedrooms: {features['bedrooms']}\nRent Estimate: {features['rentZestimate']}\nBathrooms: {features['bathrooms']}\nHAO: {features['HOA']}\nParking: {features['parking']}\nLiving Area: {features['livingArea']} sqft\n {location}\n_________\nScores\n_________\nTransitScore: {features['transitScore']}\nWalkScore: {features['walkScore']}\nBikeScore: {features['bikeScore']}\n_________\n {link}"
                 msg_to_send.append(message)
                 output.update({adress:features})
 
