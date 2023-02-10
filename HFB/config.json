@@ -1,0 +1,45 @@
+{
+    "Settings": {
+        "OP1": {
+            "location": "Hudson County, NJ",
+            "status_type": "ForSale",
+            "home_type": "Townhomes,Houses",
+            "sort": "Newest",
+            "maxPrice": "500000",
+            "bathsMin": "1",
+            "bedsMin": "1"
+        },
+        "OP1.1": {},
+        "OP2": {
+            "location": "Hudson County, NJ",
+            "status_type": "ForSale",
+            "home_type": "Townhomes,Houses",
+            "sort": "Newest",
+            "maxPrice": "500000",
+            "bathsMin": "1",
+            "bedsMin": "1"
+        },
+        "OP2.1": {},
+
+        "OP3": {
+            "location": "Hudson County, NJ",
+            "status_type": "ForSale",
+            "home_type": "Condos,Apartments,Multi-family",
+            "sort": "Newest",
+            "maxPrice": "350000",
+            "bathsMin": "1",
+            "bedsMin": "1"
+        },
+        "OP3.1": {},
+        "OP4": {
+            "location": "Manhattan,NY",
+            "status_type": "ForSale",
+            "home_type": "Condos,Apartments",
+            "sort": "Newest",
+            "maxPrice": "385000",
+            "bathsMin": "1",
+            "bedsMin": "1"
+        },
+        "OP4.1": {}
+    }
+}
