@@ -11,8 +11,10 @@ from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 #import declarativetables
-import time
 import logging
+import schedule
+import time
+import aiohttp
 
 
 logging.basicConfig(level=logging.INFO)
@@ -29,6 +31,20 @@ no_hao=['OP1','OP2']
 parking_needed=['OP2']
 zips_not_allowed=["10029","10026","10025","10027","10030","10031"]
 
+
+
+
+
+async def send_message(bot=bot, chat_id = "1585851080", message_text='hi this is henry the friendly house sniffing doggy'):
+    url = f"https://api.telegram.org/bot{bot}/sendMessage"
+    data = {
+        "chat_id": chat_id,
+        "text": message_text
+    }
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, data=data) as resp:
+            return await resp.json()
+
 def main():
     msg_to_send=[]
     
@@ -41,6 +57,7 @@ def main():
         logging.info(f'Checking for {type} properties')
         print('---------------------------------')
         response=multi_api_call(setting, results)
+        time.sleep(1)
         normalized_response=response_normalizer(results)
         if isinstance(normalized_response,str):
             message=f'No results found for {type} setting'
@@ -62,21 +79,25 @@ def main():
                 location=generate_google_maps([features['latitude'],features['longitude']])
                 link=zillow_link_based_on_zid(features['zpid'])
                 res=HAO_check(features['zpid'])
+                time.sleep(1)
+                scores=transit_score(features['zpid'])
                 features.update(res)
+                features.update(scores)
                 if type in no_hao:
                     if features['HOA']!="No HOA or not available":
                         continue
                 elif type not in no_hao:
-                    if features['HAO'].isdigit():
+                    if isinstance(features['HOA'],int):
                         if type == "OP3":
-                            if int(features['HOA'])>500:
+                            if features['HOA']>500:
                                 continue
                         elif type == "OP4":
-                            if int(features['HOA'])>800:
+                            if features['HOA']>800:
                                 continue
                 if type in parking_needed:
                     if features['parking']=="No parking or not available" or features['parking']=="No parking or not available":
                         continue
+                    
                 message=f"Address: {adress}\nType: {type}\n{features['imgSrc']}\nProperty Type: {features['propertyType']}\nEstimate Value: {features['zestimate']}\nDays Listed: {features['daysOnZillow']}\nListing Price: {features['price']}\nBedrooms: {features['bedrooms']}\nRent Estimate: {features['rentZestimate']}\nBathrooms: {features['bathrooms']}\nHAO: {features['HOA']}\nParking: {features['parking']}\nLiving Area: {features['livingArea']} sqft\n {location}\n {link}"
                 msg_to_send.append(message)
                 output.update({adress:features})
@@ -135,6 +156,23 @@ def HAO_check(id):
 def zillow_link_based_on_zid(zid):
     return f'https://www.zillow.com/homedetails/{zid}_zpid/'
 
+
+
+def transit_score(id):
+    url = "https://zillow-com1.p.rapidapi.com/walkAndTransitScore"
+
+    querystring = {"zpid":"{}".format(id)}
+
+    headers = {
+        "X-RapidAPI-Key": "a3e8f2f73dmshc1ebdb25a44b0c3p1729c7jsn5b4457b1fe75",
+        "X-RapidAPI-Host": "zillow-com1.p.rapidapi.com"
+    }
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    response=json.loads(response.text)
+    response={k: {k2: v2 for k2, v2 in v.items() if k2 != list(v.keys())[0]} for k, v in response.items()}
+    response = {k: " - ".join(map(str, v.values())) for k, v in response.items()}
+    return response
 
 #TODO : add a function to upload the dictionary to the database
 # def upload_dictionary(response):
@@ -266,8 +304,9 @@ def check_post_of_the_day(house):
 
 def response_normalizer(response):
     for index, page in response.items():
-        if page['totalResultCount'] == 0:
-            return 'No results found'
+        if "totalResultCount" in page:
+            if page['totalResultCount'] == 0:
+                return 'No results found'
         collect={}
         for properties in page.items():
             for property in properties:
@@ -275,7 +314,6 @@ def response_normalizer(response):
                     continue
                 else:
                     for house in property:
-                        print('\n')
                         current_prop={house["address"]:house}
                         collect.update(current_prop)
         return collect
@@ -307,7 +345,6 @@ def response_normalizer(response):
 
 
 if __name__ == "__main__":
-    
     application = Application.builder().token(TOKEN).build()
     # Commands
     application.add_handler(CommandHandler('start', start_command))
@@ -316,3 +353,8 @@ if __name__ == "__main__":
 
     # Run bot
     application.run_polling()
+    
+    schedule.every().day.at("16:00").do(send_message)
+
+    while True:
+        schedule.run_pending()
