@@ -344,17 +344,17 @@ def response_normalizer(response):
 
 
 
-if __name__ == "__main__":
-    application = Application.builder().token(TOKEN).build()
-    # Commands
-    application.add_handler(CommandHandler('start', start_command))
-    application.add_handler(CommandHandler('help', help_command))
-    application.add_handler(CommandHandler('update', update_command))
 
-    # Run bot
-    application.run_polling()
+application = Application.builder().token(TOKEN).build()
+# Commands
+application.add_handler(CommandHandler('start', start_command))
+application.add_handler(CommandHandler('help', help_command))
+application.add_handler(CommandHandler('update', update_command))
+
+# Run bot
+application.run_polling()
     
-    schedule.every().day.at("16:00").do(send_message)
+schedule.every().day.at("16:00").do(send_message)
 
-    while True:
-        schedule.run_pending()
+
+schedule.run_pending()
