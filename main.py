@@ -47,7 +47,7 @@ async def send_message(bot=bot, chat_id = "1585851080", message_text='hi this is
 
 def main():
     msg_to_send=[]
-    
+    c=0
     preset=read_settings()
     for type,setting in preset.items():
         if "." in type:
@@ -69,7 +69,7 @@ def main():
             msg_to_send.append(message)
             continue
         
-        c=0
+        
         
         for adress,features in normalized_response.items():
             output={}
@@ -97,8 +97,6 @@ def main():
                 if type in parking_needed:
                     if features['parking']=="No parking or not available" or features['parking']=="No parking or not available":
                         continue
-                    
-                message=f"Address: {adress}\nType: {type}\n{features['imgSrc']}\nProperty Type: {features['propertyType']}\nEstimate Value: {features['zestimate']}\nDays Listed: {features['daysOnZillow']}\nListing Price: {features['price']}\nBedrooms: {features['bedrooms']}\nRent Estimate: {features['rentZestimate']}\nBathrooms: {features['bathrooms']}\nHAO: {features['HOA']}\nParking: {features['parking']}\nLiving Area: {features['livingArea']} sqft\n {location}\n_________\nScores\n_________\nTransitScore: {features['transitScore']}\nWalkScore: {features['walkScore']}\nBikeScore: {features['bikeScore']}\n_________\n {link}"
                 msg_to_send.append(message)
                 output.update({adress:features})
 
@@ -205,7 +203,8 @@ async def start_command(update, context):
     await update.message.reply_text('Type /update to get started!')
 
 async def help_command(update, context):
-    await update.message.reply_text('If you need help, please contact @vanlaere')
+    context.bot.send_message(chat_id=update.effective_chat.id, text="hi !")
+    # await update.message.reply_text('If you need help, please contact @vanlaere')
 
 async def update_command(update, context):
     await update.message.reply_text('Looking for new properties...')
@@ -340,21 +339,18 @@ def response_normalizer(response):
 
 
 
-
-
-
-
-
 application = Application.builder().token(TOKEN).build()
 # Commands
+#schedule.every().hour.do(send_message)
+#schedule.every().hour.do(help_command)
 application.add_handler(CommandHandler('start', start_command))
 application.add_handler(CommandHandler('help', help_command))
 application.add_handler(CommandHandler('update', update_command))
 
 # Run bot
+#schedule.run_pending()
 application.run_polling()
-    
-schedule.every().day.at("16:00").do(send_message)
 
 
-schedule.run_pending()
+
+
